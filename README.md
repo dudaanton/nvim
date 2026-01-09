@@ -5,9 +5,11 @@ A fully-configured Neovim development environment running in Docker with extensi
 ## Quick Start
 
 ```bash
-# Build the Docker image
-# Edit docker_build.sh to set environment variables (ARCH, RG_ARCH) if needed
+# Build the Docker image (auto-detects architecture)
 ./docker_build.sh
+
+# Or with custom architecture
+ARCH=x86_64 ./docker_build.sh
 
 # Launch Neovim in current directory
 ./nvim.sh
@@ -171,13 +173,21 @@ return {
 After modifying Dockerfile, rebuild using the build script:
 
 ```bash
-# Edit docker_build.sh to configure build variables if needed:
-# - ARCH: architecture (default: auto-detected via $(arch))
-# - RG_ARCH: ripgrep architecture (default: aarch64)
-
+# Auto-detects architecture (arm64/x86_64) and ripgrep variant
 ./docker_build.sh
+
+# Override architecture if needed
+ARCH=x86_64 ./docker_build.sh
+
+# Override both if needed (advanced)
+ARCH=arm64 RG_ARCH=aarch64 ./docker_build.sh
+
 ./nvim.sh
 ```
+
+Architecture mapping:
+- `ARCH=arm64` → `RG_ARCH=aarch64` (auto)
+- `ARCH=x86_64` → `RG_ARCH=x86_64` (auto)
 
 ## Customization
 
