@@ -29,6 +29,10 @@ docker build -t nvim-main .
 
 ## Language Support
 
+### JavaScript/TypeScript/Vue
+- LSP support via Mason (ts_ls, volar)
+- Full Vue 3 composition API support
+
 ### Python
 - Built-in python3, pip, venv support
 - LSP via Mason (pyright, ruff)
