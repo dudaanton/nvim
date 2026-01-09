@@ -21,7 +21,7 @@ docker build -t nvim-main .
 ## Features
 
 - **Modern Neovim**: Latest version with lazy.nvim plugin manager
-- **36+ plugins**: Including AI assistants (Copilot, Avante, CodeCompanion), LSP, Treesitter, fuzzy finding
+- **36+ plugins**: Including CodeCompanion, LSP, Treesitter, fuzzy finding
 - **Multi-language support**: Python, Lua, Rust, Swift/iOS (macOS only)
 - **Docker isolation**: Development environment completely isolated from host
 - **Persistent configuration**: Config and state mounted from host
