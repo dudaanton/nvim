@@ -1,0 +1,40 @@
+{
+  "println": { "prefix": "pl", "body": "println!(\"$0\");" },
+  "println with var": { "prefix": "pln", "body": "println!(\"{:?}\", $0);" },
+  "function": {
+    "prefix": "fn",
+    "body": "fn $1($2) -> $3 {\n\t$0\n}"
+  },
+  "public function": {
+    "prefix": "pfn",
+    "body": "pub fn $1($2) -> $3 {\n\t$0\n}"
+  },
+  "struct": { "prefix": "struct", "body": "struct $1 {\n\t$0\n}" },
+  "public struct": {
+    "prefix": "pstruct",
+    "body": "pub struct $1 {\n\t$0\n}"
+  },
+  "impl": { "prefix": "impl", "body": "impl $1 {\n\t$0\n}" },
+  "impl trait": {
+    "prefix": "implt",
+    "body": "impl $1 for $2 {\n\t$0\n}"
+  },
+  "enum": { "prefix": "enum", "body": "enum $1 {\n\t$0\n}" },
+  "public enum": { "prefix": "penum", "body": "pub enum $1 {\n\t$0\n}" },
+  "match": { "prefix": "match", "body": "match $1 {\n\t$2 => $3,\n\t$0\n}" },
+  "if let": {
+    "prefix": "ifl",
+    "body": "if let $1 = $2 {\n\t$0\n}"
+  },
+  "let": { "prefix": "let", "body": "let $1 = $0;" },
+  "let mut": { "prefix": "letm", "body": "let mut $1 = $0;" },
+  "for": { "prefix": "for", "body": "for $1 in $2 {\n\t$0\n}" },
+  "while": { "prefix": "while", "body": "while $1 {\n\t$0\n}" },
+  "loop": { "prefix": "loop", "body": "loop {\n\t$0\n}" },
+  "test": {
+    "prefix": "test",
+    "body": "#[test]\nfn $1() {\n\t$0\n}"
+  },
+  "derive": { "prefix": "derive", "body": "#[derive($0)]" },
+  "use": { "prefix": "use", "body": "use $0;" }
+}

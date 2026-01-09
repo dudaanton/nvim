@@ -1,0 +1,15 @@
+{
+  "TODO": { "prefix": "todo", "body": "// TODO: $0" },
+  "FIXME": { "prefix": "fixme", "body": "// FIXME: $0" },
+  "NOTE": { "prefix": "note", "body": "// NOTE: $0" },
+  "HACK": { "prefix": "hack", "body": "// HACK: $0" },
+  "XXX": { "prefix": "xxx", "body": "// XXX: $0" },
+  "timestamp": {
+    "prefix": "date",
+    "body": "$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE"
+  },
+  "timestamp full": {
+    "prefix": "datetime",
+    "body": "$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE"
+  }
+}

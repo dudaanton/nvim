@@ -1,0 +1,29 @@
+{
+  "console.log": { "prefix": "clg", "body": "console.log($0)" },
+  "console.error": { "prefix": "cle", "body": "console.error($0)" },
+  "console.warn": { "prefix": "clw", "body": "console.warn($0)" },
+  "console.table": { "prefix": "clt", "body": "console.table($0)" },
+  "function": { "prefix": "fn", "body": "function $1 ($2) {\n\t$0\n}" },
+  "async function": {
+    "prefix": "afn",
+    "body": "async function $1 ($2) {\n\t$0\n}"
+  },
+  "arrow function": { "prefix": "af", "body": "($1) => $0" },
+  "async arrow": { "prefix": "aaf", "body": "async ($1) => $0" },
+  "export arrow function": {
+    "prefix": "efn",
+    "body": "export const $1 = ($2) => {\n\t$0\n}"
+  },
+  "try/catch": {
+    "prefix": "try",
+    "body": "try {\n\t$1\n} catch (error) {\n\t$0\n}"
+  },
+  "if/else": {
+    "prefix": "ife",
+    "body": "if ($1) {\n\t$2\n} else {\n\t$0\n}"
+  },
+  "interface": { "prefix": "int", "body": "interface $1 {\n\t$0\n}" },
+  "type": { "prefix": "typ", "body": "type $1 = $0" },
+  "import from": { "prefix": "imp", "body": "import { $1 } from '$2'$0" },
+  "import default": { "prefix": "impd", "body": "import $1 from '$2'$0" }
+}

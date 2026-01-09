@@ -1,0 +1,6 @@
+{
+  "object": { "prefix": "obj", "body": "{\n\t\"$1\": $0\n}" },
+  "array": { "prefix": "arr", "body": "[\n\t$0\n]" },
+  "string": { "prefix": "str", "body": "\"$0\"" },
+  "key-value": { "prefix": "kv", "body": "\"$1\": $0" }
+}

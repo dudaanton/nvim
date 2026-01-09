@@ -1,0 +1,2 @@
+# Ignore codecompanion.lua due to goto statement parsing issues
+lua/plugins/codecompanion.lua

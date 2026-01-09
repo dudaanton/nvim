@@ -1,0 +1,36 @@
+{
+  "console.log": { "prefix": "clg", "body": "console.log($0)" },
+  "console.error": { "prefix": "cle", "body": "console.error($0)" },
+  "function": { "prefix": "fn", "body": "function $1 ($2) {\n\t$0\n}" },
+  "async function": {
+    "prefix": "afn",
+    "body": "async function $1 ($2) {\n\t$0\n}"
+  },
+  "template": {
+    "prefix": "tpl",
+    "body": "<template>\n\t<div>\n\t\t$0\n\t</div>\n</template>\n\n<script setup lang=\"ts\">\n</script>\n"
+  },
+  "ref": { "prefix": "ref", "body": "const $1 = ref($0)" },
+  "reactive": { "prefix": "reactive", "body": "const $1 = reactive($0)" },
+  "computed": { "prefix": "computed", "body": "const $1 = computed(() => $0)" },
+  "watch": {
+    "prefix": "watch",
+    "body": "watch($1, ($2) => {\n\t$0\n})"
+  },
+  "onMounted": {
+    "prefix": "mounted",
+    "body": "onMounted(() => {\n\t$0\n})"
+  },
+  "onUnmounted": {
+    "prefix": "unmounted",
+    "body": "onUnmounted(() => {\n\t$0\n})"
+  },
+  "defineProps": {
+    "prefix": "props",
+    "body": "const props = defineProps<{\n\t$0\n}>()"
+  },
+  "defineEmits": {
+    "prefix": "emits",
+    "body": "const emit = defineEmits<{\n\t$0\n}>()"
+  }
+}

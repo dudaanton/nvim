@@ -1,0 +1,48 @@
+{
+  "print": { "prefix": "pr", "body": "print($0)" },
+  "function": {
+    "prefix": "fn",
+    "body": "func $1($2) -> $3 {\n\t$0\n}"
+  },
+  "class": {
+    "prefix": "class",
+    "body": "class $1 {\n\tinit($2) {\n\t\t$0\n\t}\n}"
+  },
+  "struct": { "prefix": "struct", "body": "struct $1 {\n\t$0\n}" },
+  "enum": { "prefix": "enum", "body": "enum $1 {\n\tcase $0\n}" },
+  "if": { "prefix": "if", "body": "if $1 {\n\t$0\n}" },
+  "if let": { "prefix": "ifl", "body": "if let $1 = $2 {\n\t$0\n}" },
+  "guard": {
+    "prefix": "guard",
+    "body": "guard $1 else {\n\t$0\n\treturn\n}"
+  },
+  "for": { "prefix": "for", "body": "for $1 in $2 {\n\t$0\n}" },
+  "while": { "prefix": "while", "body": "while $1 {\n\t$0\n}" },
+  "switch": {
+    "prefix": "switch",
+    "body": "switch $1 {\ncase $2:\n\t$3\ndefault:\n\t$0\n}"
+  },
+  "var": { "prefix": "var", "body": "var $1: $2 = $0" },
+  "let": { "prefix": "let", "body": "let $1: $2 = $0" },
+  "extension": { "prefix": "ext", "body": "extension $1 {\n\t$0\n}" },
+  "protocol": { "prefix": "protocol", "body": "protocol $1 {\n\t$0\n}" },
+  "closure": { "prefix": "closure", "body": "{ ($1) -> $2 in\n\t$0\n}" },
+  "do/catch": {
+    "prefix": "doc",
+    "body": "do {\n\t$1\n} catch {\n\t$0\n}"
+  },
+  "SwiftUI View": {
+    "prefix": "view",
+    "body": "struct $1: View {\n\tvar body: some View {\n\t\t$0\n\t}\n}"
+  },
+  "@State": { "prefix": "state", "body": "@State private var $1: $2 = $0" },
+  "@Binding": { "prefix": "binding", "body": "@Binding var $1: $0" },
+  "@ObservedObject": {
+    "prefix": "observed",
+    "body": "@ObservedObject var $1: $0"
+  },
+  "@StateObject": {
+    "prefix": "stateobj",
+    "body": "@StateObject private var $1 = $0"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "vim.keymap": {
+    "prefix": "km",
+    "body": "vim.keymap.set('$1', '$2', $0)"
+  },
+  "vim.keymap with opts": {
+    "prefix": "kmo",
+    "body": "vim.keymap.set('$1', '$2', $3, { desc = '$4'$0 })"
+  },
+  "require": { "prefix": "req", "body": "require('$1')$0" },
+  "local function": {
+    "prefix": "lfn",
+    "body": "local function $1($2)\n\t$0\nend"
+  },
+  "function": { "prefix": "fn", "body": "function $1($2)\n\t$0\nend" },
+  "local variable": { "prefix": "local", "body": "local $1 = $0" },
+  "if": { "prefix": "if", "body": "if $1 then\n\t$0\nend" },
+  "if/else": {
+    "prefix": "ife",
+    "body": "if $1 then\n\t$2\nelse\n\t$0\nend"
+  },
+  "for": { "prefix": "for", "body": "for $1 = $2, $3 do\n\t$0\nend" },
+  "for in": {
+    "prefix": "fori",
+    "body": "for $1, $2 in $3 do\n\t$0\nend"
+  },
+  "while": { "prefix": "while", "body": "while $1 do\n\t$0\nend" },
+  "vim.opt": { "prefix": "opt", "body": "vim.opt.$1 = $0" },
+  "vim.g": { "prefix": "vg", "body": "vim.g.$1 = $0" },
+  "return table": { "prefix": "ret", "body": "return {\n\t$0\n}" }
+}
