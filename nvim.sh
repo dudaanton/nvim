@@ -123,6 +123,7 @@ ADDITIONAL_VOLUMES=""
 RUN_COMMAND=""
 DOCKER_IMAGE="$DEFAULT_DOCKER_IMAGE"
 TARGET_PATH=""
+CUSTOM_CONTAINER_PATH=""
 FORCE_SWIFT=false
 REBUILD_BUILD_SERVER=false
 
@@ -158,6 +159,15 @@ while [[ "$#" -gt 0 ]]; do
       exit 1
     fi
     ;;
+  -p | --path)
+    if [ -n "$2" ]; then
+      CUSTOM_CONTAINER_PATH="$2"
+      shift
+    else
+      echo "Error: --path requires an argument."
+      exit 1
+    fi
+    ;;
   --swift)
     FORCE_SWIFT=true
     ;;
@@ -171,6 +181,7 @@ while [[ "$#" -gt 0 ]]; do
     echo "  -v, --volume PATH           Additional volume mount (format: host:container)"
     echo "  -i, --image NAME            Docker image to use (default: nvim-main)"
     echo "  -c, --cmd COMMAND           Command to run inside container (default: nvim)"
+    echo "  -p, --path PATH             Custom path inside container for mounting (default: auto)"
     echo "  --swift                     Force start Swift LSP server (auto-detected for Swift projects)"
     echo "  --rebuild-build-server      Force regenerate buildServer.json for Xcode projects"
     echo "  -h, --help                  Show this help message"
@@ -181,16 +192,17 @@ while [[ "$#" -gt 0 ]]; do
     echo "  $0 --swift ~/MyProject                    # Force Swift LSP for any project"
     echo "  $0 --rebuild-build-server ~/MySwiftApp    # Regenerate buildServer.json"
     echo "  $0 -v /data:/mnt ~/MyProject              # Mount additional volume"
+    echo "  $0 -p /workspace ~/MyProject              # Mount project to /workspace in container"
     exit 0
     ;;
     *)
       # If argument is not recognized as an option, treat it as path to file/folder
       if [ -z "$TARGET_PATH" ]; then
         TARGET_PATH="$1"
-      else
-        echo "Error: Unknown argument or multiple paths: $1"
-        echo "Use --help for usage information"
-        exit 1
+      # else
+      #   echo "Error: Unknown argument or multiple paths: $1"
+      #   echo "Use --help for usage information"
+      #   exit 1
       fi
       ;;
   esac
@@ -208,21 +220,27 @@ if [ -n "$TARGET_PATH" ]; then
     # Argument is a directory
     HOST_MOUNT_PATH="$TARGET_PATH"
 
-    # For macOS Swift projects: mount at same path as on host
-    # This is necessary for sourcekit-lsp running on host to see
-    # files at the same paths as Neovim inside container
-    #
-    # Security:
-    # - macOS only (check $OSTYPE)
-    # - Path must be inside $HOME (not system directories like /etc, /var)
-    # - macOS uses /Users/, Linux container uses /home/ → no conflicts
-    if [[ "$OSTYPE" == "darwin"* ]] && [[ "$TARGET_PATH" == "$HOME"* ]]; then
-      WORKSPACE_DIR="$TARGET_PATH"
-      CONTAINER_DIR_NAME="$(basename "$TARGET_PATH")"
+    # Use custom container path if specified
+    if [ -n "$CUSTOM_CONTAINER_PATH" ]; then
+      WORKSPACE_DIR="$CUSTOM_CONTAINER_PATH"
+      CONTAINER_DIR_NAME="$(basename "$CUSTOM_CONTAINER_PATH")"
     else
-      # For Linux or paths outside $HOME: use /w_ prefix
-      CONTAINER_DIR_NAME="w_$(basename "$TARGET_PATH")"
-      WORKSPACE_DIR="/$CONTAINER_DIR_NAME"
+      # For macOS Swift projects: mount at same path as on host
+      # This is necessary for sourcekit-lsp running on host to see
+      # files at the same paths as Neovim inside container
+      #
+      # Security:
+      # - macOS only (check $OSTYPE)
+      # - Path must be inside $HOME (not system directories like /etc, /var)
+      # - macOS uses /Users/, Linux container uses /home/ → no conflicts
+      if [[ "$OSTYPE" == "darwin"* ]] && [[ "$TARGET_PATH" == "$HOME"* ]]; then
+        WORKSPACE_DIR="$TARGET_PATH"
+        CONTAINER_DIR_NAME="$(basename "$TARGET_PATH")"
+      else
+        # For Linux or paths outside $HOME: use /w_ prefix
+        CONTAINER_DIR_NAME="w_$(basename "$TARGET_PATH")"
+        WORKSPACE_DIR="/$CONTAINER_DIR_NAME"
+      fi
     fi
 
     WORKSPACE_VOLUME="-v \"$HOST_MOUNT_PATH:$WORKSPACE_DIR\""
@@ -231,7 +249,14 @@ if [ -n "$TARGET_PATH" ]; then
     # Argument is a file
     HOST_FILE_PATH="$TARGET_PATH"
     FILE_NAME="$(basename "$TARGET_PATH")"
-    WORKSPACE_DIR="/w_workspace"
+
+    # Use custom container path if specified
+    if [ -n "$CUSTOM_CONTAINER_PATH" ]; then
+      WORKSPACE_DIR="$CUSTOM_CONTAINER_PATH"
+    else
+      WORKSPACE_DIR="/w_workspace"
+    fi
+
     WORKSPACE_VOLUME="-v \"$HOST_FILE_PATH:$WORKSPACE_DIR/$FILE_NAME\""
     NVIM_TARGET="$FILE_NAME"
   else
@@ -242,13 +267,19 @@ else
   # No argument - mount current directory
   HOST_MOUNT_PATH="$(pwd)"
 
-  # Apply same path matching logic for macOS
-  if [[ "$OSTYPE" == "darwin"* ]] && [[ "$HOST_MOUNT_PATH" == "$HOME"* ]]; then
-    WORKSPACE_DIR="$HOST_MOUNT_PATH"
-    CONTAINER_DIR_NAME="$(basename "$HOST_MOUNT_PATH")"
+  # Use custom container path if specified
+  if [ -n "$CUSTOM_CONTAINER_PATH" ]; then
+    WORKSPACE_DIR="$CUSTOM_CONTAINER_PATH"
+    CONTAINER_DIR_NAME="$(basename "$CUSTOM_CONTAINER_PATH")"
   else
-    CONTAINER_DIR_NAME="w_$(basename "$HOST_MOUNT_PATH")"
-    WORKSPACE_DIR="/$CONTAINER_DIR_NAME"
+    # Apply same path matching logic for macOS
+    if [[ "$OSTYPE" == "darwin"* ]] && [[ "$HOST_MOUNT_PATH" == "$HOME"* ]]; then
+      WORKSPACE_DIR="$HOST_MOUNT_PATH"
+      CONTAINER_DIR_NAME="$(basename "$HOST_MOUNT_PATH")"
+    else
+      CONTAINER_DIR_NAME="w_$(basename "$HOST_MOUNT_PATH")"
+      WORKSPACE_DIR="/$CONTAINER_DIR_NAME"
+    fi
   fi
 
   WORKSPACE_VOLUME="-v \"$HOST_MOUNT_PATH:$WORKSPACE_DIR\""
