@@ -8,6 +8,9 @@ if [ -z "$ARCH" ]; then
     aarch64)
       ARCH="arm64"
       ;;
+    arm64)
+      ARCH="arm64"
+      ;;
     x86_64)
       ARCH="x86_64"
       ;;
@@ -28,6 +31,9 @@ fi
 if [ -z "$RG_ARCH" ]; then
   case "$ARCH" in
     arm64)
+      RG_ARCH="aarch64"
+      ;;
+    aarch64)
       RG_ARCH="aarch64"
       ;;
     x86_64)
