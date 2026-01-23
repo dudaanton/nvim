@@ -150,11 +150,6 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
 ENV PATH="/home/dev/.cargo/bin:/home/dev/.local/bin:/home/dev/.local/share/swiftly/bin:${PATH}"
 
 # ==============================================================================
-# User Configuration
-# ==============================================================================
-COPY --chown=dev:dev ./.bashrc /home/dev/.bashrc
-
-# ==============================================================================
 # Node.js Global Packages
 # ==============================================================================
 RUN npm install -g --no-cache \
@@ -164,6 +159,11 @@ RUN npm install -g --no-cache \
   mcp-hub@latest \
   pnpm \
   prettier
+
+# ==============================================================================
+# User Configuration
+# ==============================================================================
+COPY --chown=dev:dev ./.bashrc /home/dev/.bashrc
 
 # ==============================================================================
 # Container Entry Point

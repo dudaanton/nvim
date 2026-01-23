@@ -117,3 +117,6 @@ if ! shopt -oq posix; then
 fi
 
 source ~/.common
+
+alias vim='nvim'
+export EDITOR='nvim'
