@@ -132,7 +132,8 @@ RUN curl -LsSf "https://astral.sh/uv/${UV_VERSION}/install.sh" | sh \
 # ==============================================================================
 RUN groupadd -g ${HOST_GID} dev \
   && useradd -u ${HOST_UID} -g dev -s /bin/bash -m dev \
-  && mkdir -p /home/dev/{.local/share,.local/state,.config}
+  && mkdir -p /home/dev/{.local/share,.local/state,.local/bin,.config} \
+  && chown -R dev:dev /home/dev
 
 WORKDIR /app
 USER dev
@@ -153,12 +154,16 @@ ENV PATH="/home/dev/.cargo/bin:/home/dev/.local/bin:/home/dev/.local/share/swift
 # Node.js Global Packages
 # ==============================================================================
 RUN npm install -g --no-cache \
-  @anthropic-ai/claude-code \
   @zed-industries/claude-code-acp \
   repomix \
   mcp-hub@latest \
   pnpm \
   prettier
+
+# ==============================================================================
+# Claude Code (Native Installer)
+# ==============================================================================
+RUN curl -fsSL https://claude.ai/install.sh | sh
 
 # ==============================================================================
 # User Configuration
